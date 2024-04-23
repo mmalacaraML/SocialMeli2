@@ -1,2 +1,13 @@
-package com.example.sprint1.dto;public class ResponseDto {
+package com.example.sprint1.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ResponseDto {
+
+    private String message;
 }

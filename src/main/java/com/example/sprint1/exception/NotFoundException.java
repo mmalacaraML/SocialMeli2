@@ -1,4 +1,4 @@
-package com.bootcampW22.EjercicioGlobal.exception;
+package com.example.sprint1.exception;
 
 public class NotFoundException extends RuntimeException{
 

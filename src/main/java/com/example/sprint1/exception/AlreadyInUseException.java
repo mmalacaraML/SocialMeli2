@@ -1,4 +1,4 @@
-package com.bootcampW22.EjercicioGlobal.exception;
+package com.example.sprint1.exception;
 
 public class AlreadyInUseException extends RuntimeException{
 

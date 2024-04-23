@@ -1,2 +1,27 @@
-package com.example.sprint1.model;public class User {
+package com.example.sprint1.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Set;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class User {
+
+    private Integer id;
+    private String user_name;
+    private Set<Integer> followers;
+    private Set<Integer> followed;
+    private Set<Integer> posts;
+
+    public Integer getCountFollowers(){
+        return followers.size();
+    }
+
+    public Integer getCountFollowed(){
+        return followed.size();
+    }
 }

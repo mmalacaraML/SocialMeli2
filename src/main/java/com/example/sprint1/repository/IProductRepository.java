@@ -1,2 +1,3 @@
-package com.example.sprint1.repository;public interface IProductRepository {
+package com.example.sprint1.repository;
+public interface IProductRepository {
 }
