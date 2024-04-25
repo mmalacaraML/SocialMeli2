@@ -8,4 +8,6 @@ public interface IUserRepository {
     User findUserById(Integer id);
     void updateUserFollower(User user, User userToFollow);
     Optional<User> getUserById(int id);
+
+    void updateUserFollowerDelete(User user, User userToFollow);
 }

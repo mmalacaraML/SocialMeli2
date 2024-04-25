@@ -82,6 +82,11 @@ public class PostRepositoryImpl implements IPostRepository {
     }
     // finished modify Leonardo
 
+    /**
+     * Returns all the recent posts
+     * @param userId
+     * @return
+     */
     @Override
     public List<Post> getResentPost(Integer userId) {
 

@@ -53,7 +53,7 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public List<Post> findAll() {
-        return List.of();
+        return postRepository.findAll();
     }
 
     @Override

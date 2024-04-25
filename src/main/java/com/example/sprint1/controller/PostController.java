@@ -88,4 +88,13 @@ public class PostController {
         public ResponseEntity<?> getPromo (@RequestParam Integer user_id){
             return new ResponseEntity<>(postService.getPromo(user_id), HttpStatus.OK);
         }
+
+    /**
+     * Get all the promos
+     * @return
+     */
+    @GetMapping()
+        public ResponseEntity<?> getAllPromos(){
+            return new ResponseEntity<>(postService.findAll(), HttpStatus.OK);
+        }
     }

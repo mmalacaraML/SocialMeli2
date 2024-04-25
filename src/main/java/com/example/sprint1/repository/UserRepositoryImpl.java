@@ -40,6 +40,7 @@ public class UserRepositoryImpl implements IUserRepository{
      * Returns the list of all users
      * @return
      */
+    @Override
     public List<User> findAll(){
         return listOfUsers;
     }
@@ -65,6 +66,23 @@ public class UserRepositoryImpl implements IUserRepository{
         userToFollow.addFollower(user.getId());
     }
 
+    /**
+     * Updates the follower and followed by deleting
+     * @param user
+     * @param userToFollow
+     * @return
+     */
+    @Override
+    public void updateUserFollowerDelete(User user, User userToFollow){
+        user.deleteFollowed(userToFollow.getId());
+        userToFollow.deleteFollower(user.getId());
+    }
+
+    /**
+     * Returns an optional of users
+     * @param id
+     * @return
+     */
     @Override
     public Optional<User> getUserById(int id) {
         return listOfUsers.stream()
