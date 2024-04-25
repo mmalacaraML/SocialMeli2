@@ -6,13 +6,11 @@ import com.example.sprint1.model.Post;
 import java.util.List;
 
 public interface IPostService {
-    // Begin modify Leonardo
-    // buscar post por ID
-    Object addPost(PostDto postDto) throws IllegalArgumentException;
-    Post save (Post post);
+    PostDto addPost(PostDto postDto) throws IllegalArgumentException;
+
     List<Post> findAll();
+
     Post findById(int id);
-    //ends modify Leonardo
 
     List<PostForListDto> followedList(Integer userId, String order);
 

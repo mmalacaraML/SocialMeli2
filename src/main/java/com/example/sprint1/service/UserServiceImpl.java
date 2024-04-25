@@ -49,7 +49,7 @@ public class UserServiceImpl implements IUserService{
      * @return
      */
     @Override
-    public Object getFollowerCount(Integer userId) {
+    public CountFollowersUserDto getFollowerCount(Integer userId) {
         // Retrieve all users from the repository.
         List<User> userList = userRepository.findAll();
 
@@ -167,7 +167,7 @@ public class UserServiceImpl implements IUserService{
      * @return
      */
     @Override
-    public Object setUnfollow(Integer userId, Integer userIdToUnfollow) {
+    public String setUnfollow(Integer userId, Integer userIdToUnfollow) {
         // Checks if the IDs are the same, indicating the user is trying to unfollow themselves.
         if (userId.equals(userIdToUnfollow)) {
             throw new IllegalArgumentException("You cannot unfollow yourself.");

@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements IPostService {
 
-    // begin modify Leonardo
     private static List<Post> posts = new ArrayList<>();
 
     @Autowired
@@ -36,7 +35,7 @@ public class PostServiceImpl implements IPostService {
      * @throws IllegalArgumentException - If the postDto validation fails or if a post with the same ID already exists.
      */
     @Override
-    public Object addPost(PostDto postDto) {
+    public PostDto addPost(PostDto postDto) {
         validatePostDto(postDto); // Validates the necessary fields in the postDto
         Post post = convertDtoToEntity(postDto); // Converts postDto to a Post entity
         if (postRepository.findById(post.getId()) != null) {
@@ -46,10 +45,6 @@ public class PostServiceImpl implements IPostService {
         return postDto; // Returns the PostDto, could be enhanced with more data if needed
     }
 
-    @Override
-    public Post save(Post post) {
-        return null;
-    }
 
     @Override
     public List<Post> findAll() {

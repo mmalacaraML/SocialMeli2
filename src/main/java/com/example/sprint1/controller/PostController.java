@@ -90,11 +90,11 @@ public class PostController {
         }
 
     /**
-     * Get all the promos
+     * Obtain a list of all posts
      * @return
      */
-    @GetMapping()
-        public ResponseEntity<?> getAllPromos(){
+    @GetMapping("/posts")
+        public ResponseEntity<?> getAllPosts(){
             return new ResponseEntity<>(postService.findAll(), HttpStatus.OK);
         }
     }
