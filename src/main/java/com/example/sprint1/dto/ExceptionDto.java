@@ -1,4 +1,5 @@
-package com.bootcampW22.EjercicioGlobal.dto;
+// removí package com.bootcampW22.EjercicioGlobal.dto;
+package com.example.sprint1.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

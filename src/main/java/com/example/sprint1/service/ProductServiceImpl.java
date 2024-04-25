@@ -1,7 +1,7 @@
 package com.example.sprint1.service;
 
 import com.example.sprint1.dto.PostDto;
-import com.example.sprint1.repository.IProductRepository;
+import com.example.sprint1.repository.IPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 public class ProductServiceImpl implements IProductService{
 
     @Autowired
-    IProductRepository productRepository;
+    IPostRepository postRepository;
+
 
     @Override
     public Object addPost(PostDto postDto) {
@@ -17,15 +18,14 @@ public class ProductServiceImpl implements IProductService{
     }
 
     @Override
-    public Object followedList(Integer userId) {
+    public Object followedList(Integer userId, String order) {
         return null;
     }
 
     @Override
-    public Object orderedList(Integer userId, String order) {
+    public Object followedList(Integer userId) {
         return null;
     }
-
 
     @Override
     public Object postPromo(PostDto postDto) {

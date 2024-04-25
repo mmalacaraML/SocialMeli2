@@ -1,6 +1,5 @@
 package com.example.sprint1.repository;
 
-import com.example.sprint1.model.Post;
 import com.example.sprint1.model.Product;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Repository
-public class ProductRepositoryImpl implements IProductRepository{
+public class ProductRepositoryImpl {
 
     private static List<Product> listOfProducts;
 

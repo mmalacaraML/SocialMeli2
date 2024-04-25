@@ -423,5 +423,65 @@
     },
     "has_promo": true,
     "discount": 0.5
+  },
+  {
+    "id": 26,
+    "user_id": 4,
+    "date": "2022-04-20",
+    "category": 3,
+    "price": 5.99,
+    "product": {
+      "id": 4,
+      "product_name": "Product D",
+      "type": "Type X",
+      "brand": "Brand Delta",
+      "color": "Yellow",
+      "notes": "This is product D."
+    }
+  },
+  {
+    "id": 27,
+    "user_id": 4,
+    "date": "2022-04-19",
+    "category": 3,
+    "price": 5.99,
+    "product": {
+      "id": 4,
+      "product_name": "Product D",
+      "type": "Type X",
+      "brand": "Brand Delta",
+      "color": "Yellow",
+      "notes": "This is product D."
+    }
+  },
+  {
+    "id": 28,
+    "user_id": 4,
+    "date": "2024-04-19",
+    "category": 3,
+    "price": 5.99,
+    "product": {
+      "id": 4,
+      "product_name": "Product D",
+      "type": "Type X",
+      "brand": "Brand Delta",
+      "color": "Yellow",
+      "notes": "This is product D."
+    }
+  },
+  {
+    "id": 29,
+    "user_id": 4,
+    "date": "2024-04-21",
+    "category": 3,
+    "price": 5.99,
+    "product": {
+      "id": 4,
+      "product_name": "Product D",
+      "type": "Type X",
+      "brand": "Brand Delta",
+      "color": "Yellow",
+      "notes": "This is product D."
+    }
   }
 ]
