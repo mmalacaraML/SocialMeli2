@@ -11,7 +11,7 @@
 		{
 			"name": "0001 - Follow a User",
 			"request": {
-				"method": "PATCH",
+				"method": "POST",
 				"header": [],
 				"url": {
 					"raw": "{{Host}}/users/{userID}/follow/{userIdToFollow}",
@@ -30,7 +30,7 @@
 				{
 					"name": "0001 - Follow a User",
 					"originalRequest": {
-						"method": "PATCH",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "{{Host}}/users/3/follow/10",
@@ -53,7 +53,7 @@
 				{
 					"name": "0001 - Follow a User",
 					"originalRequest": {
-						"method": "PATCH",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "{{Host}}/users/3/follow/11",
@@ -76,7 +76,7 @@
 				{
 					"name": "0001 - Follow a User",
 					"originalRequest": {
-						"method": "PATCH",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "{{Host}}/users/3/follow/12",
@@ -409,7 +409,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 100,\n    \"user_id\": 11,\n    \"date\": \"16-05-2024\",\n    \"category\": 1,\n    \"price\": 35.45,\n    \"product\": {\n      \"id\": 20,\n      \"product_name\": \"Product HH\",\n      \"type\": \"Type X\",\n      \"brand\": \"Brand Alpha\",\n      \"color\": \"Red\",\n      \"notes\": \"This is product HH.\"\n    }\n  }",
+							"raw": "{\n    \"id\": 110,\n    \"user_id\": 11,\n    \"date\": \"16-03-2024\",\n    \"category\": 1,\n    \"price\": 37.11,\n    \"product\": {\n      \"id\": 20,\n      \"product_name\": \"Product ZZ\",\n      \"type\": \"Type X\",\n      \"brand\": \"Brand Alpha\",\n      \"color\": \"Red\",\n      \"notes\": \"This is product ZZ.\"\n    }\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -539,7 +539,7 @@
 		{
 			"name": "0007 - Unfollow a User",
 			"request": {
-				"method": "PATCH",
+				"method": "POST",
 				"header": [],
 				"url": {
 					"raw": "{{Host}}/users/{userID}/follow/{userIdToFollow}",
@@ -558,7 +558,7 @@
 				{
 					"name": "0007 - Unfollow a User",
 					"originalRequest": {
-						"method": "PATCH",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "{{Host}}/users/3/unfollow/11",
@@ -729,6 +729,24 @@
 					],
 					"path": [
 						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Posts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Host}}/products/posts",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"products",
+						"posts"
 					]
 				}
 			},
