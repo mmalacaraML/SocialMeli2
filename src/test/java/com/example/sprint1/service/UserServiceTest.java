@@ -4,8 +4,10 @@ package com.example.sprint1.service;
 import com.example.sprint1.model.User;
 import com.example.sprint1.repository.UserRepositoryImpl;
 import com.example.sprint1.repository.UserRepositoryTest;
+import com.example.sprint1.util.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,12 +36,14 @@ public class UserServiceTest {
     UserServiceImpl userService;
 
 
+
     @ParameterizedTest
     @DisplayName("Test getFollowers")
     @MethodSource("com.example.sprint1.util.Utils#userProvider")
     public void testGetFollowers(List<User> users) {
         // arrange
         Mockito.when(userRepository.findAll()).thenReturn(users);
+        Assertions.assertEquals(userService.getUsers(),users);
         // act
 
         // assert
