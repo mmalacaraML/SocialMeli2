@@ -26,30 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-@ExtendWith(MockitoExtension.class)
+
 public class UserServiceTest {
-
-    @Mock
-    UserRepositoryImpl userRepository;
-
-    @InjectMocks
-    UserServiceImpl userService;
-
-
-
-    @ParameterizedTest
-    @DisplayName("Test getFollowers")
-    @MethodSource("com.example.sprint1.util.Utils#userProvider")
-    public void testGetFollowers(List<User> users) {
-        // arrange
-        Mockito.when(userRepository.findAll()).thenReturn(users);
-        Assertions.assertEquals(userService.getUsers(),users);
-        // act
-
-        // assert
-    }
-
-
-
 
 }

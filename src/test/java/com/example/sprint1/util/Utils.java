@@ -1,6 +1,7 @@
 package com.example.sprint1.util;
 
 import com.example.sprint1.dto.PostDto;
+import com.example.sprint1.dto.PostForListDto;
 import com.example.sprint1.dto.UserDto;
 import com.example.sprint1.model.Post;
 import com.example.sprint1.model.User;
@@ -48,6 +49,7 @@ public class Utils {
 
         return Stream.of(posts);
     }
+
 
     public static Stream<List<UserDto>> userDtoProvider() throws IOException {
         File file;
