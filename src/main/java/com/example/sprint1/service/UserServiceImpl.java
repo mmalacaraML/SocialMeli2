@@ -30,17 +30,34 @@ public class UserServiceImpl implements IUserService{
      */
     @Override
     public void addFollower(Integer userID, Integer userIdToFollow) {
-        if(userID.equals(userIdToFollow))
-            throw new BadRequestException("Can't follow yourself");
-        User userAux = userRepository.findUserById(userID);
-        User userToFollow = userRepository.findUserById(userIdToFollow);
-        if(userAux == null)
-            throw new BadRequestException("User not found");
-        if(userToFollow == null)
-            throw new BadRequestException("User to follow not found");
-        if(userAux.getFollowed().contains(userToFollow.getId()) || userToFollow.getFollowers().contains(userAux.getId()))
-            throw new BadRequestException("User already followed");
-        userRepository.updateUserFollower(userAux, userToFollow);
+        //Create optional of a possible user
+        Optional<User> userAuxOptional = Optional.ofNullable(userRepository.findUserById(userID));
+        //Create optional of a possible user To Follow
+        Optional<User> userToFollowOptional = Optional.ofNullable(userRepository.findUserById(userIdToFollow));
+        //Lambda
+        userAuxOptional.ifPresentOrElse(
+                //We ask if user to follow exists
+                userAux -> userToFollowOptional.ifPresentOrElse(
+                        userToFollow -> {
+                            //We ask if user is trying to follow himself
+                            if (userID.equals(userIdToFollow)) {
+                                throw new BadRequestException("Can't follow yourself");
+                            }
+                            //We check if user is already followed
+                            if (userAux.getFollowed().contains(userToFollow.getId()) || userToFollow.getFollowers().contains(userAux.getId())) {
+                                throw new BadRequestException("User already followed");
+                            }
+                            //None of the cases creates conflict, we simply update the followers and followed
+                            userRepository.updateUserFollower(userAux, userToFollow);
+                        },
+                        () -> {
+                            throw new BadRequestException("User to follow not found");
+                        }
+                ),
+                () -> {
+                    throw new BadRequestException("User not found");
+                }
+        );
     }
 
     /**
