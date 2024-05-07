@@ -55,18 +55,7 @@ public class UserController {
      */
     @GetMapping("/{userId}/followers/list")
     public ResponseEntity<?> getFollowerList(@PathVariable Integer userId, @RequestParam(required = false) String order){
-
-        // Validation on whether the list will have any order
-        if (order == null || order.isEmpty()){
-            return new ResponseEntity<>(userService.getFollowerList(userId, order),HttpStatus.OK);
-        }
-        if (order.equals("name_asc") || order.equals("name_desc")){
-            return new ResponseEntity<>(userService.getFollowersOrdered(userId, order),HttpStatus.OK);
-        }
-        else {
-            throw new NotFoundException("Query params not matching any case");
-
-        }
+        return new ResponseEntity<>(userService.getFollowerList(userId, order), HttpStatus.OK);
     }
 
     /**
@@ -79,15 +68,7 @@ public class UserController {
      */
     @GetMapping("/{userId}/followed/list")
     public ResponseEntity<?> getFollowedList(@PathVariable Integer userId, @RequestParam(value = "order", required = false) String order){
-        if (order == null){
-            return new ResponseEntity<>(userService.getFollowedList(userId), HttpStatus.OK);
-        }
-        if(order.equals("name_asc") || order.equals("name_desc")){
-            return new ResponseEntity<>(userService.getFollowedOrdered(userId, order), HttpStatus.OK);
-        }
-        else {
-            throw new NotFoundException("Query params not matching any case");
-        }
+        return new ResponseEntity<>(userService.getFollowedList(userId, order), HttpStatus.OK);
     }
 
     /**
@@ -102,9 +83,4 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //TODO quitar el ultimo método
-    @GetMapping("{userId}/followers/list-ordered")
-    public ResponseEntity<?> getFollowerListOrderByName(@PathVariable Integer userId,@RequestParam String order){
-        return new ResponseEntity<>(userService.getFollowersOrdered(userId,order),HttpStatus.OK);
-    }
 }

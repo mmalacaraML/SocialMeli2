@@ -1,5 +1,4 @@
-## Endpoints numerados 
-
+## Endpoints numerados
 | Núm. | Endpoint                                           | Descripción | Método | Ejemplo | Opciones de ordenación |
 |---|----------------------------------------------------|---|---|---|---|
 | US0001 | `POST /users/{userId}/follow/{userIdToFollow}`     | Seguir a un usuario | PATCH | `PATCH /users/123/follow/234` | - |

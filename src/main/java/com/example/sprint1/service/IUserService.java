@@ -9,23 +9,20 @@ import com.example.sprint1.dto.FollowerUsersDto;
 import com.example.sprint1.model.User;
 
 public interface IUserService {
+
     void addFollower(Integer userID, Integer userIdToFollow);
 
     CountFollowersUserDto getFollowerCount(Integer userId);
 
-    FollowerListDto getFollowerList(Integer userId, String order);
+    FollowListDto getFollowerList(Integer userId, String order);
 
-    FollowListDto getFollowedList(Integer userId);
+    FollowListDto getFollowedList(Integer userId, String order);
 
     void setUnfollow(Integer userId, Integer userIdToUnfollow);
-
-    FollowerListDto getFollowersOrdered(Integer userId, String order);
 
     List<User> getUsers();
 
     FollowerUsersDto convertToFollowUserDto(User user);
-
-    FollowListDto getFollowedOrdered(Integer userId, String order);
 
     void addPostToUser(Integer userId, Integer postId);
 }

@@ -99,82 +99,97 @@ public class UserServiceImpl implements IUserService{
 
 
     /**
-     * Get the list of followers for a user
-     * @param userId The ID of the user
-     * @param order The order in which to return the followers
-     * @return The list of followers for the user
+     *Retrieves the list of followers for a given user ID and orders them based on the provided criteria.
+     *If the provided user ID does not exist, throws a NotFoundException.
+     *If the provided order parameter is invalid, throws a BadRequestException.
+     *@param userId The ID of the user whose followers are to be retrieved.
+     *@param order The order in which the followers are to be sorted. Acceptable values are "name_asc" for ascending order
      */
     @Override
-    public FollowerListDto getFollowerList(Integer userId, String order) {
-        // Get the user by ID and check if the user exists
+    public FollowListDto getFollowerList(Integer userId, String order) {
+
+        // User validation
         Optional<User> optionalUser = userRepository.getUserById(userId);
-        User principalUser = optionalUser.orElseThrow(
-                () -> new NotFoundException("No se encontró el usuario con el ID proporcionado"));
+        optionalUser.orElseThrow(() -> new NotFoundException("No se encontró el usuario con el ID proporcionado"));
 
-        List<FollowerUsersDto> followersList = new ArrayList();
+        //Call to service
+        List<User> followerList = userRepository.getFollowersById(userId);
 
-        Set<Integer> followers = principalUser.getFollowers();
-
-        // Iterate over the followers and add them to the list in DTO format
-        for (Integer miniId : followers) {
-            optionalUser = userRepository.getUserById(miniId);
-            optionalUser.ifPresent(user -> followersList.add(convertToFollowUserDto(user)));
+        //Set default value of order if null
+        if (order == null){
+            order = "default";
         }
-        return new FollowerListDto(principalUser.getId(), principalUser.getUser_name(), followersList);
+
+        //Sorting by alphanumerical name
+        switch (order){
+            case "name_asc":
+                followerList = followerList.stream().sorted(Comparator.comparing(User::getUser_name)).toList();
+                break;
+
+            case "name_desc":
+                followerList = followerList.stream().sorted(Comparator.comparing(User::getUser_name).reversed()).toList();
+                break;
+
+            case "default":
+                break;
+
+            default:
+                throw new BadRequestException("query param must exist");
+
+        }
+
+        //DTOAssembly
+        List<FollowerUsersDto> followerUsersDto = followerList.stream().map(user -> new FollowerUsersDto(user.getId(), user.getUser_name())).toList();
+        FollowListDto followerListDto = new FollowListDto(optionalUser.get().getId(), optionalUser.get().getUser_name(), followerUsersDto);
+
+        return followerListDto;
     }
 
     /**
-     * Get all the followers from user using followerListDto
-     * @param userId
-     * @return
-     */
-    public FollowerListDto getFollowerList(Integer userId) {
-        List<User> allUsers = userRepository.findAll();
-        Optional<User> userSpecified = allUsers.stream().filter(user -> user.getId() == userId).findFirst();
-        if (userSpecified.isPresent() && userSpecified.get().getFollowers()!=null){
-            Set<Integer> followerList = userSpecified.get().getFollowers();
-            List<FollowerUsersDto> followerUsersDto =  allUsers.stream()
-                    .filter(user ->  followerList.contains(user.getId()))
-                    .map(user -> new FollowerUsersDto(user.getId(), user.getUser_name())).toList();
-            FollowerListDto followerListDto = new FollowerListDto();
-            followerListDto.setFollowers(followerUsersDto);
-            followerListDto.setUser_id(userId);
-            followerListDto.setUser_name(userSpecified.get().getUser_name());
-            return followerListDto;
-        }
-        else {
-            throw new NotFoundException("User not Found");
-        }
-
-    }
-
-    /**
-     * Gets the followed list
-     * @param userId
-     * @return
+     *Retrieves the list of users followed by a given user ID and orders them based on the provided criteria.
+     *If the provided user ID does not exist, throws a NotFoundException.
+     *If the provided order parameter is invalid, throws a BadRequestException.
+     *@param userId The ID of the user whose followed users are to be retrieved.
+     *@param order The order in which the followed users are to be sorted. Acceptable values are "name_asc" for ascending order
      */
     @Override
-    public  FollowListDto getFollowedList(Integer userId) {
-        // Get all users from repository
-        List<User> allUsers = userRepository.findAll();
-        // Select the user that matches with the id supplied
-        Optional<User> userSpecified = allUsers.stream().filter(user -> user.getId() == userId).findFirst();
-        if(userSpecified.isPresent()&&userSpecified.get().getFollowed()!=null){
-            // Get the list of users that the user follows
-            Set<Integer> followedList = userSpecified.get().getFollowed();
-            // Return the list of users that the user follows pa
-            List<FollowdUserDto> followdUsersDtos = allUsers.stream()
-                    .filter(user -> followedList.contains(user.getId()))
-                    .map(user -> new FollowdUserDto(user.getId(), user.getUser_name())).toList();
-            FollowListDto followedListDto = new FollowListDto();
-            followedListDto.setFollowed(followdUsersDtos);
-            followedListDto.setUser_id(userId);
-            followedListDto.setUser_name(userSpecified.get().getUser_name());
-            return followedListDto;
+    public  FollowListDto getFollowedList(Integer userId, String order) {
+
+        // User validation
+        Optional<User> optionalUser = userRepository.getUserById(userId);
+        optionalUser.orElseThrow(() -> new NotFoundException("No se encontró el usuario con el ID proporcionado"));
+
+        //Call to service
+        List<User> followedList = userRepository.getFollowedById(userId);
+
+        //Set default value of order if null
+        if (order == null){
+            order = "default";
         }
-        else{
-            throw new NotFoundException("User not Found");
+
+        //Sorting by alphanumerical name
+        switch (order){
+            case "name_asc":
+                followedList = followedList.stream().sorted(Comparator.comparing(User::getUser_name)).toList();
+                break;
+
+            case "name_desc":
+                followedList = followedList.stream().sorted(Comparator.comparing(User::getUser_name).reversed()).toList();
+                break;
+
+            case "default":
+                break;
+
+            default:
+                throw new BadRequestException("query param must exist");
+
         }
+
+        //DTOAssembly
+        List<FollowerUsersDto> followedUsersDto = followedList.stream().map(user -> new FollowerUsersDto(user.getId(), user.getUser_name())).toList();
+        FollowListDto followedListDto = new FollowListDto(optionalUser.get().getId(), optionalUser.get().getUser_name(), followedUsersDto);
+
+        return followedListDto;
     }
 
     /**
@@ -201,63 +216,6 @@ public class UserServiceImpl implements IUserService{
         userRepository.updateUserFollowerDelete(user, userToUnfollow);
     }
 
-
-    /**
-     * Call to getFollowerList to sort by name the following users.
-     * @param userId
-     * @param order
-     * @return followerListDto
-     */
-    @Override
-    public FollowerListDto getFollowersOrdered(Integer userId, String order) {
-        //Decides order of sorting
-        Comparator<String> comparador;
-        if(order.equals("name_asc")){
-            comparador = Comparator.naturalOrder();
-        }
-        else {
-            comparador = Comparator.reverseOrder();
-        }
-
-        //Call to getFollowedList (already exception checked)
-        FollowerListDto followerListDto = getFollowerList(userId);
-        List<FollowerUsersDto> followerList = followerListDto.getFollowers().stream()
-                .sorted(Comparator.comparing(FollowerUsersDto::getUser_name, comparador))
-                .toList();
-
-
-
-        //Set ordered list
-        followerListDto.setFollowers(followerList);
-
-        return followerListDto;
-    }
-    /**
-     * Call to getFollowerList to sort by name the followed users.
-     * @param userId
-     * @param order
-     * @return followerListDto
-     */
-    @Override
-    public FollowListDto getFollowedOrdered(Integer userId, String order) {
-        //Decides order of sorting
-        Comparator<String> comparador;
-        if(order.equals("name_asc")){
-            comparador = Comparator.naturalOrder();
-        }
-        else {
-            comparador = Comparator.reverseOrder();
-        }
-        //Call to getFollowedList (already exception checked)
-        FollowListDto followedListDto = getFollowedList(userId);
-        List<FollowdUserDto> followerList = followedListDto.getFollowed().stream()
-                .sorted(Comparator.comparing(FollowdUserDto::getUser_name, comparador)).toList();
-
-        //Set and return followers
-        followedListDto.setFollowed(followerList);
-
-        return followedListDto;
-    }
 
     /**
      * Mapper user to followerUsersDto

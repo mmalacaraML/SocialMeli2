@@ -1,5 +1,7 @@
 package com.example.sprint1.repository;
 
+import com.example.sprint1.dto.FollowerListDto;
+import com.example.sprint1.dto.FollowerUsersDto;
 import com.example.sprint1.exception.NotFoundException;
 import com.example.sprint1.model.User;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -9,8 +11,10 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public class UserRepositoryImpl implements IUserRepository{
@@ -105,6 +109,46 @@ public class UserRepositoryImpl implements IUserRepository{
         else{
             throw new NotFoundException("User not found");
         }
+    }
+
+    @Override
+    public List<User> getFollowersById(Integer id) {
+        // Get the user by ID and check if the user exists
+        Optional<User> optionalUser = getUserById(id);
+
+        User principalUser = optionalUser.orElseThrow(
+                () -> new NotFoundException("No se encontró el usuario con el ID proporcionado"));
+
+        List<User> followersList = new ArrayList();
+
+        Set<Integer> followers = principalUser.getFollowers();
+
+        // Iterate over the followers and add them to the list in DTO format
+        for (Integer miniId : followers) {
+            optionalUser = getUserById(miniId);
+            optionalUser.ifPresent(user -> followersList.add(user));
+        }
+        return followersList;
+    }
+
+    @Override
+    public List<User> getFollowedById(Integer id) {
+        // Get the user by ID and check if the user exists
+        Optional<User> optionalUser = getUserById(id);
+
+        User principalUser = optionalUser.orElseThrow(
+                () -> new NotFoundException("No se encontró el usuario con el ID proporcionado"));
+
+        List<User> followedList = new ArrayList();
+
+        Set<Integer> followed = principalUser.getFollowed();
+
+        // Iterate over the followers and add them to the list in DTO format
+        for (Integer miniId : followed) {
+            optionalUser = getUserById(miniId);
+            optionalUser.ifPresent(user -> followedList.add(user));
+        }
+        return followedList;
     }
 
 }
