@@ -27,7 +27,7 @@ public class Utils {
         return Stream.of(users);
     }
 
-    public static Stream<Post> postProvider() throws IOException {
+    public static Stream<List<Post>> postProvider() throws IOException {
         File file;
         ObjectMapper objectMapper = new ObjectMapper();
         List<Post> posts;
@@ -35,10 +35,10 @@ public class Utils {
         file= ResourceUtils.getFile("classpath:posts.json");
         posts = objectMapper.readValue(file,new TypeReference<List<Post>>(){});
 
-        return posts.stream();
+        return Stream.of(posts);
     }
 
-    public static Stream<PostDto> postDtoProvider() throws IOException {
+    public static Stream<List<PostDto>> postDtoProvider() throws IOException {
         File file;
         ObjectMapper objectMapper = new ObjectMapper();
         List<PostDto> posts;
@@ -46,10 +46,10 @@ public class Utils {
         file= ResourceUtils.getFile("classpath:posts.json");
         posts = objectMapper.readValue(file,new TypeReference<List<PostDto>>(){});
 
-        return posts.stream();
+        return Stream.of(posts);
     }
 
-    public static Stream<UserDto> userDtoProvider() throws IOException {
+    public static Stream<List<UserDto>> userDtoProvider() throws IOException {
         File file;
         ObjectMapper objectMapper = new ObjectMapper();
         List<UserDto> users;
@@ -57,7 +57,7 @@ public class Utils {
         file= ResourceUtils.getFile("classpath:users.json");
         users = objectMapper.readValue(file,new TypeReference<List<UserDto>>(){});
 
-        return users.stream();
+        return Stream.of(users);
     }
 
 }
