@@ -106,13 +106,38 @@ public class PostServiceImpl implements IPostService {
     }
 
 
-    // Method to obtain the list of followed posts of a user, sorted by date. REQ. US0006, US0009
+    /**
+     * Req. US0006 - US0009
+     * This method is used to check which metod is called by the controller.
+     * It calls the followedList method or selectIforderFollowedList to obtain the list of followed posts and then sorts if required it by date.
+     * @param userId, order - The userId of the user and the order of the list.
+     * @return List<PostForListDto> - The list of posts sorted by date.
+     */
     @Override
-    public List<PostForListDto> followedList(Integer userId, String order) {
+    public List<PostForListDto> selectIfOrderFollowedList(Integer userId , String order){
+        // Check the value of the 'order' parameter.
+        if(order==null){
+            return followedList(userId);
+        }else if(order.equals("date_asc")||order.equals("date_desc")){
+            return followedListSortedByDate(userId, order);
+        }else{
+            // If 'order' is neither "date_desc" nor "date_asc", it's an invalid value.
+            throw new BadRequestException("Invalid sorting order: " + order);
+        }
+    }
+
+    /**
+     * Req. US0006
+     * It calls the followedList method to obtain the list of followed posts.
+     * @param userId, order - The userId of the user and the order of the list.
+     * @return List<PostForListDto> - The list of posts sorted by date.
+     */
+    // Method to obtain the list of followed posts of a user, sorted by date. REQ. US0006
+
+    public List<PostForListDto> followedList(Integer userId) {
         // Validations:
         // If the obtained list is empty (No existing user or No pub)
         // Check the value of the 'order' parameter.
-
         Optional<User> user = userRepository.getUserById(userId);
         if(user.isEmpty()){
             throw new NotFoundException("No se encontró al usuario");
@@ -134,20 +159,35 @@ public class PostServiceImpl implements IPostService {
         //Auxiliary to give the format necessary to sort functions
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+        // Sort the list by date in descending order.
+        orderList = sortedList.stream()
+                .sorted(Comparator.comparing(post -> LocalDate.parse(((Post) post).getDate(),formatter)).reversed())
+                .toList();
 
-        if (order == null || order.trim().isEmpty() || order.equals("date_desc")) {
-            // If 'order' is null, empty, or "date_desc", sort the list by date in descending order.
-             orderList = sortedList.stream()
-                    .sorted(Comparator.comparing(post -> LocalDate.parse(((Post) post).getDate(),formatter)).reversed())
-                    .toList();
-        } else if (order.equals("date_asc")) {
-             orderList = sortedList.stream()
-                    .sorted(Comparator.comparing(post -> LocalDate.parse(post.getDate(),formatter))).toList();
-        } else {
-            // If 'order' is neither "date_desc" nor "date_asc", it's an invalid value.
-            throw new BadRequestException("Invalid sorting order: " + order);
-        }
         return orderList.stream().map(post -> mapper.convertValue(post, PostForListDto.class)).collect(Collectors.toList());
+    }
+
+    /**
+     * REQ. US0009
+     * This method is used to sort the list of followed posts of a user by date.
+     * It calls the followedList method to obtain the list of followed posts and then sorts it by date.
+     * @param userId, order - The userId of the user and the order of the list.
+     * @return List<PostForListDto> - The list of posts sorted by date.
+     */
+    public List<PostForListDto> followedListSortedByDate(Integer userId , String order) {
+        // Call the followedList method to obtain the list of followed posts.
+        List<PostForListDto> sortedList = followedList(userId);
+        //Auxiliary to give the format necessary to sort functions
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        // Sort the list by date in the specified order.
+        if(order.equals("date_asc")){
+            // Sort the list by date in ascending order.
+            return sortedList.stream()
+                    .sorted(Comparator.comparing(post -> LocalDate.parse(post.getDate(),formatter))).toList();
+        }else{
+            // Sort the list by date in descending order.
+            return followedList(userId);
+        }
     }
 
     @Override

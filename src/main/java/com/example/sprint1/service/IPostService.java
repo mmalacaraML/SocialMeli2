@@ -12,7 +12,7 @@ public interface IPostService {
 
     Post findById(int id);
 
-    List<PostForListDto> followedList(Integer userId, String order);
+    List<PostForListDto> selectIfOrderFollowedList(Integer userId , String order);
 
     Object postPromo(PostDto postDto);
 

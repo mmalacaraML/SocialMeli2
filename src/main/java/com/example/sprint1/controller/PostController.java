@@ -29,18 +29,18 @@ public class PostController {
     }
 
     /**
-         * US 0006 US 0009
-         * Obtain a list of the publications made by the sellers that a user follows in the last two weeks
-         * Sort by ascending and descending date
-         * @param userId
-         * @param order
-         * @return
-         */
-        @GetMapping("/followed/{userId}/list")
-        public ResponseEntity<?> followedList (@PathVariable Integer
-        userId, @RequestParam(value = "order", required = false) String order){
-            return new ResponseEntity<>(postService.followedList(userId, order), HttpStatus.OK);
-        }
+     * US 0006 US 0009
+     * Obtain a list of the publications made by the sellers that a user follows in the last two weeks
+     * Sort by ascending and descending date
+     * @param userId
+     * @param order
+     * @return
+     */
+    @GetMapping("/followed/{userId}/list")
+    public ResponseEntity<?> followedList (@PathVariable Integer
+                                                   userId, @RequestParam(value = "order", required = false) String order){
+        return new ResponseEntity<>(postService.selectIfOrderFollowedList(userId,order), HttpStatus.OK);
+    }
 
         /**
          * US 0010
