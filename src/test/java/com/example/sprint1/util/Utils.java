@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 public class Utils {
 
 
-    public static Stream<User> userProvider() throws IOException {
+    public static Stream<List<User>> userProvider() throws IOException {
         File file;
         ObjectMapper objectMapper = new ObjectMapper();
         List<User> users;
@@ -24,7 +24,7 @@ public class Utils {
         file= ResourceUtils.getFile("classpath:users.json");
         users = objectMapper.readValue(file,new TypeReference<List<User>>(){});
 
-        return users.stream();
+        return Stream.of(users);
     }
 
     public static Stream<Post> postProvider() throws IOException {
