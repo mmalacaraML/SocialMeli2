@@ -1,5 +1,6 @@
 package com.example.sprint1.service;
 
+
 import com.example.sprint1.model.User;
 import com.example.sprint1.repository.UserRepositoryImpl;
 import com.example.sprint1.repository.UserRepositoryTest;
@@ -43,7 +44,6 @@ public class UserServiceTest {
 
         // assert
     }
-
 
 
 
