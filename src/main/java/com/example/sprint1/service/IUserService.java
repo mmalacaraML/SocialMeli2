@@ -17,7 +17,7 @@ public interface IUserService {
 
     FollowListDto getFollowedList(Integer userId);
 
-    String setUnfollow(Integer userId, Integer userIdToUnfollow);
+    void setUnfollow(Integer userId, Integer userIdToUnfollow);
 
     FollowerListDto getFollowersOrdered(Integer userId, String order);
 

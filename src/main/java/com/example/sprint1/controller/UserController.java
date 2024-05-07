@@ -90,27 +90,17 @@ public class UserController {
         }
     }
 
-    //US 0007
-
     /**
-     * Unfollows userId to userIdToUnfollow
-     * @param userId
-     * @param userIdToUnfollow
-     * @return
+     * US 0007 Unfollow - Allows a user to stop following another user
+     * @param userId - The ID of the user who initiates the unfollow operation
+     * @param userIdToUnfollow - The ID of the user who is to be unfollowed
+     * @return ResponseEntity<?> HTTP No Content indicating that the unfollow operation was successful.
      */
     @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
     public ResponseEntity<?> setUnfollow(@PathVariable Integer userId, @PathVariable Integer userIdToUnfollow) {
-        try {
-            // Call the service to process the unfollow action
-            userService.setUnfollow(userId, userIdToUnfollow);
-            // If there's a logical error return an error message with HTTP 400 Bad Request
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            // For other unexpected errors, return a generic error message with HTTP 400 Bad Request
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        userService.setUnfollow(userId, userIdToUnfollow);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
     //TODO quitar el ultimo método
     @GetMapping("{userId}/followers/list-ordered")

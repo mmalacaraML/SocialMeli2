@@ -33,26 +33,20 @@ public class PostServiceImpl implements IPostService {
     private IUserService userService;
 
     /**
-     * This method should be called when a new post submission is received. It handles validation,
-     * conversion, and storage of the post data.
-     * Adds a new post to the system after validating and converting the provided PostDto.
-     * It checks for the existence of the post ID in the repository before saving to avoid duplicates.
+     * US 0005 - Adds a new post to the repository
      * @param postDto - The DTO containing all necessary data to create a post.
-     * @return PostDto - Returns the PostDto after the post has been successfully added to the repository.
-     * @throws IllegalArgumentException - If the postDto validation fails or if a post with the same ID already exists.
+     * @return postDto - Returns the PostDto after the post has been successfully added to the repository.
      */
     @Override
     public PostDto addPost(PostDto postDto) {
-        validatePostDto(postDto); // Validates the necessary fields in the postDto
-        Post post = convertDtoToEntity(postDto); // Converts postDto to a Post entity
+        validatePostDto(postDto);
+        Post post = convertDtoToEntity(postDto);
         if (postRepository.findById(post.getId()) != null) {
             throw new AlreadyInUseException("A post with this ID already exists.");
         }
-        postRepository.save(post); // Saves the post to the repository
-        userService.addPostToUser(postDto.getUser_id(),postDto.getId()); // Adds the post to the user's list of posts
-        return postDto; // Returns the PostDto, could be enhanced with more data if needed
+        postRepository.save(post);
+        return postDto;
     }
-
 
     @Override
     public List<Post> findAll() {

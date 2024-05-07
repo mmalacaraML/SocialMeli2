@@ -1,7 +1,5 @@
 package com.example.sprint1.exception;
 
-// removí import com.bootcampW22.EjercicioGlobal.dto.ExceptionDto;
-// agregué
 import com.example.sprint1.dto.ExceptionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

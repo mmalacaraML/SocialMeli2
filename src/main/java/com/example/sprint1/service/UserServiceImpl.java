@@ -161,34 +161,28 @@ public class UserServiceImpl implements IUserService{
     }
 
     /**
-     * Unfollows userId
-     * @param userId
-     * @param userIdToUnfollow
-     * @return
+     * US 0007 - Unfollows a user from another user's follower list
+     * @param userId - The ID of the user initiating the unfollow request
+     * @param userIdToUnfollow - The ID of the user to be unfollowed.
+     * @throws BadRequestException If the user attempts to unfollow themselves or
+     *                             If they are not currently following the user they intend to unfollow
+     * @throws NotFoundException If either the user initiating the unfollow or the user to be unfollowed
+     *                           cannot be found
      */
     @Override
-    public String setUnfollow(Integer userId, Integer userIdToUnfollow) {
-        // Checks if the IDs are the same, indicating the user is trying to unfollow themselves.
+    public void setUnfollow(Integer userId, Integer userIdToUnfollow) {
         if (userId.equals(userIdToUnfollow)) {
-            throw new IllegalArgumentException("You cannot unfollow yourself.");
+            throw new BadRequestException("You cannot unfollow yourself.");
         }
-        // Retrieve the user and the user to unfollow from the repository
-        User user = userRepository.findUserById(userId);
-        User userToUnfollow = userRepository.findUserById(userIdToUnfollow);
-        if (user == null || userToUnfollow == null) {
-            throw new IllegalArgumentException("User not found.");
-        }
-        // Verify if the current user actually follows the user to unfollow
+        User user = userRepository.getUserById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found: " + userId));
+        User userToUnfollow = userRepository.getUserById(userIdToUnfollow)
+                .orElseThrow(() -> new NotFoundException("User to unfollow not found: " + userIdToUnfollow));
         if (!user.getFollowed().contains(userIdToUnfollow)) {
-            // If the current user is not following the other user, return an error
-            throw new IllegalArgumentException("You are not following this user.");
+            throw new BadRequestException("You are not following this user: " + userIdToUnfollow);
         }
-        // Proceed to update the follow state between users
         userRepository.updateUserFollowerDelete(user, userToUnfollow);
-        // Return a success message after successfully unfollowing the user
-        return "Unfollow successful";
     }
-    // finished method US0007
 
 
     /**
