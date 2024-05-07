@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/products")
 public class PostController {
@@ -23,7 +25,7 @@ public class PostController {
      *                         * it returns an error message with an HTTP 400 Bad Request status.
      */
     @PostMapping("/post")
-    public ResponseEntity<?> addPost(@RequestBody PostDto postDto) {
+    public ResponseEntity<?> addPost(@RequestBody @Valid PostDto postDto) {
         PostDto response = postService.addPost(postDto);
         return ResponseEntity.ok(response);
     }
@@ -49,7 +51,7 @@ public class PostController {
          * @return
          */
         @PostMapping("/promo-post")
-        public ResponseEntity<?> postPromo (@RequestBody PostDto postDto){
+        public ResponseEntity<?> postPromo (@RequestBody @Valid PostDto postDto){
             return new ResponseEntity<>(postService.postPromo(postDto), HttpStatus.CREATED);
         }
 

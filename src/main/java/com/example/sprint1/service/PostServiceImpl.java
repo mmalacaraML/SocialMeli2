@@ -1,8 +1,10 @@
 package com.example.sprint1.service;
 
 import com.example.sprint1.dto.PostDto;
+import com.example.sprint1.dto.ProductDto;
 import com.example.sprint1.exception.AlreadyInUseException;
 import com.example.sprint1.model.Post;
+import com.example.sprint1.model.Product;
 import com.example.sprint1.model.User;
 import com.example.sprint1.repository.IPostRepository;
 import com.example.sprint1.dto.PostForListDto;
@@ -97,12 +99,25 @@ public class PostServiceImpl implements IPostService {
         System.out.println("Categoría: " + postDto.getCategory() + ", Tipo de dato: " + postDto.getCategory().getClass());
         post.setPrice(postDto.getPrice());
         System.out.println("Precio: " + postDto.getPrice() + ", Tipo de dato: " + postDto.getPrice().getClass());
-        post.setProduct(postDto.getProduct());
+
+        post.setProduct(convertProductDtoToEntity(postDto.getProduct()));
         System.out.println("Producto: " + postDto.getProduct() + ", Tipo de dato: " + postDto.getProduct().getClass());
         post.setHas_promo(false);  // Promociones y descuentos se manejan por separado
         System.out.println("Tiene promoción: " + post.isHas_promo() + ", Tipo de dato: " + Boolean.TYPE);
         post.setDiscount(0.0);
         return post;
+    }
+
+    private Product convertProductDtoToEntity(ProductDto productDto) {
+        Product product = new Product();
+        product.setId(productDto.getId());
+        product.setProduct_name(productDto.getProduct_name());
+        product.setType(productDto.getType());
+        product.setBrand(productDto.getBrand());
+        product.setColor(productDto.getColor());
+        product.setNotes(productDto.getNotes());
+
+        return product;
     }
 
 
