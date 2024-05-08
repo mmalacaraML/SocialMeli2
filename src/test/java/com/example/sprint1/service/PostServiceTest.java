@@ -2,12 +2,16 @@ package com.example.sprint1.service;
 
 import com.example.sprint1.dto.PostDto;
 import com.example.sprint1.dto.PostForListDto;
+import com.example.sprint1.exception.BadRequestException;
 import com.example.sprint1.model.Post;
 import com.example.sprint1.model.Product;
 import com.example.sprint1.model.User;
 import com.example.sprint1.repository.IUserRepository;
 import com.example.sprint1.repository.PostRepositoryImpl;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -25,6 +29,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+
 @ExtendWith(MockitoExtension.class)
 public class PostServiceTest {
 
@@ -36,6 +43,53 @@ public class PostServiceTest {
 
     @InjectMocks
     PostServiceImpl postService;
+
+    /**
+     * T-0005
+     * This test case tests the method selectIfOrderFollowedList of the PostService class.
+     * It tests the value of variable "order".
+     * The test case uses a mock UserRepository and a mock PostRepository to provide the necessary data for the test.
+     */
+
+    @ParameterizedTest
+    @DisplayName("Test Valid Order")
+    @MethodSource("com.example.sprint1.util.Utils#userProvider")
+    public void testFollowedListSortedByDate_ValidOrder(List<User> users) {
+        // Arrange
+        Integer userId = 3;
+        String order = "date_asc";
+        // Mock the necessary dependencies
+        Mockito.when(userRepository.getUserById(userId)).thenReturn(users.stream().filter(u -> u.getId().equals(userId)).findFirst());
+        Mockito.when(postRepository.getResentPost(anyInt())).thenReturn(new ArrayList<>()); //Return something
+
+        // Act
+        List<PostForListDto> result = postService.selectIfOrderFollowedList(userId, order);
+
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.stream()
+                .map(PostForListDto::getDate)
+                .allMatch(date -> LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy")) != null));
+    }
+
+    /**
+     * T-0005
+     * This test case tests the method selectIfOrderFollowedList of the PostService class.
+     * It tests the value of variable "order" when isn't valid.
+     * The test case uses a BadRequestException to verify the invalid value.
+     */
+    @ParameterizedTest
+    @DisplayName("Test Invalid Order")
+    @MethodSource("com.example.sprint1.util.Utils#userProvider")
+    public void testFollowedListSortedByDate_InvalidOrder(List<User> users) {
+        // Arrange
+        Integer userId = 3;
+        String order = "invalid_order";
+
+        // Act and Assert
+        assertThrows(BadRequestException.class, () -> postService.selectIfOrderFollowedList(userId, order));
+    }
+
 
     /**
      * T-0006
@@ -60,7 +114,7 @@ public class PostServiceTest {
 
         // mock the UserRepository and PostRepository methods
         Mockito.when(userRepository.getUserById(1)).thenReturn(Optional.of(new User(1, "User 1", Set.of(2), Set.of(2), Set.of(1))));
-        Mockito.when(postRepository.getResentPost(Mockito.anyInt())).thenReturn(expectedPosts);
+        Mockito.when(postRepository.getResentPost(anyInt())).thenReturn(expectedPosts);
         // call the method under test
         List<PostForListDto> actualPosts = postService.selectIfOrderFollowedList(1, "date_asc");
         // convert expectedPosts to PostForListDto
@@ -98,7 +152,7 @@ public class PostServiceTest {
         // act
         // mock the UserRepository and PostRepository methods
         Mockito.when(userRepository.getUserById(1)).thenReturn(Optional.of(new User(1, "User 1", Set.of(2), Set.of(2), Set.of(1))));
-        Mockito.when(postRepository.getResentPost(Mockito.anyInt())).thenReturn(expectedPosts);
+        Mockito.when(postRepository.getResentPost(anyInt())).thenReturn(expectedPosts);
         // call the method under test
         List<PostForListDto> actualPosts = postService.selectIfOrderFollowedList(1, "date_desc");
         // convert expectedPosts to PostForListDto
