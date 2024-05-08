@@ -1,8 +1,7 @@
 package com.example.sprint1.service;
 
 
-import com.example.sprint1.dto.FollowListDto;
-import com.example.sprint1.dto.CountFollowersUserDto;
+import com.example.sprint1.dto.*;
 import com.example.sprint1.exception.BadRequestException;
 import com.example.sprint1.exception.NotFoundException;
 import com.example.sprint1.model.User;
@@ -251,6 +250,28 @@ public class UserServiceTest {
         BadRequestException exception = assertThrows(BadRequestException.class, () -> userService.setUnfollow(userId, userIdToUnfollow));
         assertEquals("You cannot unfollow yourself.", exception.getMessage());
         verify(userRepository, times(0)).updateUserFollowerDelete(user, userToUnfollow);
+    }
+
+    @ParameterizedTest
+    @DisplayName("Test ascending sort of followers")
+    @MethodSource("com.example.sprint1.util.Utils#ascendingFollowUserProvider")
+    public void ascendingFollowerSort(TestFollowDto testFollowDtos){
+        //Arrange
+        List<User> inputUserDtoList = testFollowDtos.getInputFollow();
+        FollowListDto outputFollowListDto = testFollowDtos.getExpectedOrderedFollow();
+        FollowListDto actualresponseFollowListDto = new FollowListDto();
+        User user = testFollowDtos.getUser();
+
+        //Mocking
+        when(userRepository.getUserById(user.getId())).thenReturn(Optional.ofNullable(user));
+        when(userRepository.getFollowersById(user.getId())).thenReturn(inputUserDtoList);
+
+        //Act
+        actualresponseFollowListDto = userService.getFollowerList(user.getId(), "name_asc");
+
+        //Assert
+        Assertions.assertEquals(actualresponseFollowListDto, outputFollowListDto);
+
     }
 
 }

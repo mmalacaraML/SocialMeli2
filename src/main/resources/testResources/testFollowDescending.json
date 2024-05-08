@@ -1,0 +1,15 @@
+{
+  "user_id": 3,
+  "user_name": "user3",
+  "followed": [
+    {
+    "user_id": 5,
+    "user_name": "user5"
+  },
+    {
+      "user_id": 4,
+      "user_name": "user4"
+    }
+
+  ]
+}
