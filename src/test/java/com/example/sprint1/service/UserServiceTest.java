@@ -259,19 +259,85 @@ public class UserServiceTest {
         //Arrange
         List<User> inputUserDtoList = testFollowDtos.getInputFollow();
         FollowListDto outputFollowListDto = testFollowDtos.getExpectedOrderedFollow();
-        FollowListDto actualresponseFollowListDto = new FollowListDto();
+        FollowListDto actualresponseFollowListDto;
         User user = testFollowDtos.getUser();
 
         //Mocking
-        when(userRepository.getUserById(user.getId())).thenReturn(Optional.ofNullable(user));
+        when(userRepository.getUserById(user.getId())).thenReturn(Optional.of(user));
         when(userRepository.getFollowersById(user.getId())).thenReturn(inputUserDtoList);
 
         //Act
         actualresponseFollowListDto = userService.getFollowerList(user.getId(), "name_asc");
 
         //Assert
-        Assertions.assertEquals(actualresponseFollowListDto, outputFollowListDto);
+        Assertions.assertEquals(actualresponseFollowListDto, outputFollowListDto, "Non matching sorting");
 
     }
 
+
+    @ParameterizedTest
+    @DisplayName("Test ascending sort of followers")
+    @MethodSource("com.example.sprint1.util.Utils#descendingFollowerUserProvider")
+    public void descendingFollowerSort(TestFollowDto testFollowDtos){
+        //Arrange
+        List<User> inputUserDtoList = testFollowDtos.getInputFollow();
+        FollowListDto outputFollowListDto = testFollowDtos.getExpectedOrderedFollow();
+        FollowListDto actualresponseFollowListDto;
+        User user = testFollowDtos.getUser();
+
+        //Mocking
+        when(userRepository.getUserById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.getFollowersById(user.getId())).thenReturn(inputUserDtoList);
+
+        //Act
+        actualresponseFollowListDto = userService.getFollowerList(user.getId(), "name_desc");
+
+        //Assert
+        Assertions.assertEquals(actualresponseFollowListDto, outputFollowListDto, "Non matching sorting");
+
+    }
+
+    @ParameterizedTest
+    @DisplayName("Test descending sort of followed")
+    @MethodSource("com.example.sprint1.util.Utils#descendingFollowedUserProvider")
+    public void descendingFollowedSort(TestFollowDto testFollowDtos){
+        //Arrange
+        List<User> inputUserDtoList = testFollowDtos.getInputFollow();
+        FollowListDto outputFollowListDto = testFollowDtos.getExpectedOrderedFollow();
+        FollowListDto actualresponseFollowListDto;
+        User user = testFollowDtos.getUser();
+
+        //Mocking
+        when(userRepository.getUserById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.getFollowedById(user.getId())).thenReturn(inputUserDtoList);
+
+        //Act
+        actualresponseFollowListDto = userService.getFollowedList(user.getId(), "name_desc");
+
+        //Assert
+        Assertions.assertEquals(actualresponseFollowListDto, outputFollowListDto, "Non matching sorting");
+
+    }
+
+    @ParameterizedTest
+    @DisplayName("Test ascending sort of followed")
+    @MethodSource("com.example.sprint1.util.Utils#ascendingFollowedUserProvider")
+    public void ascendingFollowedSort(TestFollowDto testFollowDtos){
+        //Arrange
+        List<User> inputUserDtoList = testFollowDtos.getInputFollow();
+        FollowListDto outputFollowListDto = testFollowDtos.getExpectedOrderedFollow();
+        FollowListDto actualresponseFollowListDto;
+        User user = testFollowDtos.getUser();
+
+        //Mocking
+        when(userRepository.getUserById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.getFollowedById(user.getId())).thenReturn(inputUserDtoList);
+
+        //Act
+        actualresponseFollowListDto = userService.getFollowedList(user.getId(), "name_asc");
+
+        //Assert
+        Assertions.assertEquals(actualresponseFollowListDto, outputFollowListDto, "Non matching sorting");
+
+    }
 }
