@@ -38,7 +38,13 @@ public class UserServiceTest {
     UserServiceImpl userService;
 
 
-
+    /**
+     * Test getFollowers method
+     * This test method checks the functionality of the getFollowerCount method in the UserService class.
+     * The method is expected to return the count of followers for a specific user, along with the user's name and ID.
+     *
+     * @param users - The list of users to be used for the test
+     */
     @ParameterizedTest
     @DisplayName("Test getFollowers")
     @MethodSource("com.example.sprint1.util.Utils#userProvider")
@@ -53,6 +59,11 @@ public class UserServiceTest {
         Assertions.assertEquals(3, expected.getUserId());
     }
 
+    /**
+     * Test getFollowers method with bad path
+     * This test method checks the functionality of the getFollowerCount method in the UserService class.
+     * The method is expected to throw a NotFoundException when the user is not found.
+     */
     @Test
     @DisplayName("Test getFollowers bad path")
     public void testGetFollowersBadPath() {
