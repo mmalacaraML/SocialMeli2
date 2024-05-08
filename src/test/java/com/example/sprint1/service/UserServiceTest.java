@@ -68,7 +68,7 @@ public class UserServiceTest {
     }
 
     /**
-     * Unit test T-0004
+     * Unit test T-0003
      * Test that any other order throws a bad exception
      */
     @Test
