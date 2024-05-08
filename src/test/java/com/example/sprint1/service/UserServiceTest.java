@@ -1,6 +1,8 @@
 package com.example.sprint1.service;
 
 
+import com.example.sprint1.dto.CountFollowersUserDto;
+import com.example.sprint1.exception.NotFoundException;
 import com.example.sprint1.model.User;
 import com.example.sprint1.repository.UserRepositoryImpl;
 import com.example.sprint1.repository.UserRepositoryTest;
@@ -43,10 +45,21 @@ public class UserServiceTest {
     public void testGetFollowers(List<User> users) {
         // arrange
         Mockito.when(userRepository.findAll()).thenReturn(users);
-        Assertions.assertEquals(userService.getUsers(),users);
         // act
-
+        CountFollowersUserDto expected = userService.getFollowerCount(3);
         // assert
+        Assertions.assertEquals(2, expected.getCount());
+        Assertions.assertEquals("user3", expected.getUserName());
+        Assertions.assertEquals(3, expected.getUserId());
+    }
+
+    @Test
+    @DisplayName("Test getFollowers bad path")
+    public void testGetFollowersBadPath() {
+        // arrange
+        Mockito.when(userRepository.findAll()).thenReturn(new ArrayList<>());
+        // act
+        Assertions.assertThrows(NotFoundException.class, () -> userService.getFollowerCount(3));
     }
 
 
