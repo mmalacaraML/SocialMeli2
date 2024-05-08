@@ -1,16 +1,13 @@
 package com.example.sprint1.service;
 
 
+import com.example.sprint1.dto.FollowListDto;
 import com.example.sprint1.dto.CountFollowersUserDto;
 import com.example.sprint1.exception.BadRequestException;
 import com.example.sprint1.exception.NotFoundException;
 import com.example.sprint1.model.User;
 import com.example.sprint1.repository.UserRepositoryImpl;
-import com.example.sprint1.repository.UserRepositoryTest;
 import com.example.sprint1.util.Utils;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,17 +15,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -45,6 +35,59 @@ public class UserServiceTest {
 
 
     /**
+     * Unit tests T-0003
+     * Tests the ascending order and descending order of the method
+     * getFollowerListToString, with order name_asc and name_desc
+     */
+    @Test
+    @DisplayName("Verify that the alphabetical sort type exists")
+    public void testGetFollowerListToString(){
+        //Arrange
+        List<User> mockFollowerList = Arrays.asList(
+                new User(2, "Manuel", new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                new User(3, "Mau", new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                new User(4, "Joaquin",new HashSet<>(), new HashSet<>(), new HashSet<>())
+        );
+
+        when(userRepository.getUserById(1)).thenReturn(Optional.of(new User(1, "John",new HashSet<>(), new HashSet<>(), new HashSet<>())));
+        when(userRepository.getFollowersById(1)).thenReturn(mockFollowerList);
+
+        // Act
+        FollowListDto resultAsc = userService.getFollowerList(1, "name_asc");
+        FollowListDto resultDesc = userService.getFollowerList(1, "name_desc");
+
+        // Assert
+        //Ascending order
+        assertEquals("Joaquin", resultAsc.getFollowed().get(0).getUser_name());
+        assertEquals("Manuel", resultAsc.getFollowed().get(1).getUser_name());
+        assertEquals("Mau", resultAsc.getFollowed().get(2).getUser_name());
+
+        //Descending order
+        assertEquals("Mau", resultDesc.getFollowed().get(0).getUser_name());
+        assertEquals("Manuel", resultDesc.getFollowed().get(1).getUser_name());
+        assertEquals("Joaquin", resultDesc.getFollowed().get(2).getUser_name());
+    }
+
+    /**
+     * Unit test T-0003
+     * Test that any other order throws a bad exception
+     */
+    @Test
+    @DisplayName("Verify that the alphabetical sort type doesn't exist")
+    public void testGetFollowerListToStringException() {
+        List<User> mockFollowerList = Arrays.asList(
+                new User(2, "Manuel", new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                new User(3, "Mau", new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                new User(4, "Joaquin",new HashSet<>(), new HashSet<>(), new HashSet<>())
+        );
+
+        when(userRepository.getUserById(1)).thenReturn(Optional.of(new User(1, "John",new HashSet<>(), new HashSet<>(), new HashSet<>())));
+        when(userRepository.getFollowersById(1)).thenReturn(mockFollowerList);
+
+        // Exception handling for invalid sort order
+        assertThrows(BadRequestException.class, () -> userService.getFollowerList(1, "other_sort"));
+    }
+
      * Test getFollowers method
      * This test method checks the functionality of the getFollowerCount method in the UserService class.
      * The method is expected to return the count of followers for a specific user, along with the user's name and ID.
