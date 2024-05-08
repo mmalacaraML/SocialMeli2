@@ -230,4 +230,27 @@ public class UserServiceTest {
         verify(userRepository, times(0)).updateUserFollowerDelete(user, userToUnfollow);
     }
 
+    /*
+     * Unit tests T-0002
+     * Test unfollowUser for the same user
+     * Bad request exception
+     */
+    @ParameterizedTest
+    @DisplayName("Test unfollowUser for the same user")
+    @MethodSource("com.example.sprint1.util.Utils#userProvider")
+    public void testUnfollowUserForTheSameUser(List<User> users) {
+        // arrange
+        Integer userId = 3;
+        Integer userIdToUnfollow = 3;
+
+        User user = users.stream().filter(u -> u.getId().equals(userId)).findFirst().orElse(null);
+        User userToUnfollow = users.stream().filter(u -> u.getId().equals(userIdToUnfollow)).findFirst().orElse(null);
+        // act
+
+        // assert
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> userService.setUnfollow(userId, userIdToUnfollow));
+        assertEquals("You cannot unfollow yourself.", exception.getMessage());
+        verify(userRepository, times(0)).updateUserFollowerDelete(user, userToUnfollow);
+    }
+
 }
