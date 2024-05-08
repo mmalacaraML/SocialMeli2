@@ -1,7 +1,9 @@
 package com.example.sprint1.dto;
 
-import java.util.Set;
+import lombok.Data;
 
+import java.util.Set;
+@Data
 public class UserDto {
     private Integer id;
     private String user_name;

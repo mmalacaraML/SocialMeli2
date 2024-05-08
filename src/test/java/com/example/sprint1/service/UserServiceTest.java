@@ -1,8 +1,7 @@
 package com.example.sprint1.service;
 
 
-import com.example.sprint1.dto.FollowListDto;
-import com.example.sprint1.dto.CountFollowersUserDto;
+import com.example.sprint1.dto.*;
 import com.example.sprint1.exception.BadRequestException;
 import com.example.sprint1.exception.NotFoundException;
 import com.example.sprint1.model.User;
@@ -253,5 +252,139 @@ public class UserServiceTest {
         assertEquals("You cannot unfollow yourself.", exception.getMessage());
         verify(userRepository, times(0)).updateUserFollowerDelete(user, userToUnfollow);
     }
+    /**
+     * Parameterized test for ascending sort of followers.
+     * This test verifies if the ascending sorting of followers is performed correctly.
+     * A method source is used to provide different sets of input data.
+     *
+     * The @ParameterizedTest annotation indicates that this is a parameterized test.
+     * The @DisplayName annotation provides a descriptive name for the test.
+     * The @MethodSource annotation specifies the method that provides the test data for the parameterized test.
+     *
+     * @param testFollowDtos An object containing the input and expected output data for the test.
+     */
 
+    @ParameterizedTest
+    @DisplayName("Test ascending sort of followers")
+    @MethodSource("com.example.sprint1.util.Utils#ascendingFollowUserProvider")
+    public void ascendingFollowerSort(TestFollowDto testFollowDtos){
+        //Arrange
+        List<User> inputUserDtoList = testFollowDtos.getInputFollow();
+        FollowListDto outputFollowListDto = testFollowDtos.getExpectedOrderedFollow();
+        FollowListDto actualresponseFollowListDto;
+        User user = testFollowDtos.getUser();
+
+        //Mocking
+        when(userRepository.getUserById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.getFollowersById(user.getId())).thenReturn(inputUserDtoList);
+
+        //Act
+        actualresponseFollowListDto = userService.getFollowerList(user.getId(), "name_asc");
+
+        //Assert
+        Assertions.assertEquals(actualresponseFollowListDto, outputFollowListDto, "Non matching sorting");
+
+    }
+
+    /**
+     * Parameterized test for descending sort of followers.
+     * This test verifies if the descending sorting of followers is performed correctly.
+     * A method source is used to provide different sets of input data.
+     *
+     * The @ParameterizedTest annotation indicates that this is a parameterized test.
+     * The @DisplayName annotation provides a descriptive name for the test.
+     * The @MethodSource annotation specifies the method that provides the test data for the parameterized test.
+     *
+     * @param testFollowDtos An object containing the input and expected output data for the test.
+     */
+
+    @ParameterizedTest
+    @DisplayName("Test descending sort of followers")
+    @MethodSource("com.example.sprint1.util.Utils#descendingFollowerUserProvider")
+    public void descendingFollowerSort(TestFollowDto testFollowDtos){
+        //Arrange
+        List<User> inputUserDtoList = testFollowDtos.getInputFollow();
+        FollowListDto outputFollowListDto = testFollowDtos.getExpectedOrderedFollow();
+        FollowListDto actualresponseFollowListDto;
+        User user = testFollowDtos.getUser();
+
+        //Mocking
+        when(userRepository.getUserById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.getFollowersById(user.getId())).thenReturn(inputUserDtoList);
+
+        //Act
+        actualresponseFollowListDto = userService.getFollowerList(user.getId(), "name_desc");
+
+        //Assert
+        Assertions.assertEquals(actualresponseFollowListDto, outputFollowListDto, "Non matching sorting");
+
+    }
+
+    /**
+     * Parameterized test for descending sort of followed users.
+     * This test verifies if the descending sorting of followed users is performed correctly.
+     * A method source is used to provide different sets of input data.
+     *
+     * The @ParameterizedTest annotation indicates that this is a parameterized test.
+     * The @DisplayName annotation provides a descriptive name for the test.
+     * The @MethodSource annotation specifies the method that provides the test data for the parameterized test.
+     *
+     * @param testFollowDtos An object containing the input and expected output data for the test.
+     */
+
+    @ParameterizedTest
+    @DisplayName("Test descending sort of followed")
+    @MethodSource("com.example.sprint1.util.Utils#descendingFollowedUserProvider")
+    public void descendingFollowedSort(TestFollowDto testFollowDtos){
+        //Arrange
+        List<User> inputUserDtoList = testFollowDtos.getInputFollow();
+        FollowListDto outputFollowListDto = testFollowDtos.getExpectedOrderedFollow();
+        FollowListDto actualresponseFollowListDto;
+        User user = testFollowDtos.getUser();
+
+        //Mocking
+        when(userRepository.getUserById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.getFollowedById(user.getId())).thenReturn(inputUserDtoList);
+
+        //Act
+        actualresponseFollowListDto = userService.getFollowedList(user.getId(), "name_desc");
+
+        //Assert
+        Assertions.assertEquals(actualresponseFollowListDto, outputFollowListDto, "Non matching sorting");
+
+    }
+
+    /**
+     * Parameterized test for ascending sort of followed users.
+     * This test verifies if the ascending sorting of followed users is performed correctly.
+     * A method source is used to provide different sets of input data.
+     *
+     * The @ParameterizedTest annotation indicates that this is a parameterized test.
+     * The @DisplayName annotation provides a descriptive name for the test.
+     * The @MethodSource annotation specifies the method that provides the test data for the parameterized test.
+     *
+     * @param testFollowDtos An object containing the input and expected output data for the test.
+     */
+
+    @ParameterizedTest
+    @DisplayName("Test ascending sort of followed")
+    @MethodSource("com.example.sprint1.util.Utils#ascendingFollowedUserProvider")
+    public void ascendingFollowedSort(TestFollowDto testFollowDtos){
+        //Arrange
+        List<User> inputUserDtoList = testFollowDtos.getInputFollow();
+        FollowListDto outputFollowListDto = testFollowDtos.getExpectedOrderedFollow();
+        FollowListDto actualresponseFollowListDto;
+        User user = testFollowDtos.getUser();
+
+        //Mocking
+        when(userRepository.getUserById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.getFollowedById(user.getId())).thenReturn(inputUserDtoList);
+
+        //Act
+        actualresponseFollowListDto = userService.getFollowedList(user.getId(), "name_asc");
+
+        //Assert
+        Assertions.assertEquals(actualresponseFollowListDto, outputFollowListDto, "Non matching sorting");
+
+    }
 }
