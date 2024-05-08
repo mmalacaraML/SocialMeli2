@@ -9,5 +9,4 @@ class Sprint1ApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
