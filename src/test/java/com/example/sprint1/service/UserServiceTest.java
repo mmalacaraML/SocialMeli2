@@ -2,6 +2,7 @@ package com.example.sprint1.service;
 
 
 import com.example.sprint1.dto.FollowListDto;
+import com.example.sprint1.dto.CountFollowersUserDto;
 import com.example.sprint1.exception.BadRequestException;
 import com.example.sprint1.exception.NotFoundException;
 import com.example.sprint1.model.User;
@@ -87,18 +88,44 @@ public class UserServiceTest {
         assertThrows(BadRequestException.class, () -> userService.getFollowerList(1, "other_sort"));
     }
 
+     * Test getFollowers method
+     * This test method checks the functionality of the getFollowerCount method in the UserService class.
+     * The method is expected to return the count of followers for a specific user, along with the user's name and ID.
+     *
+     * @param users - The list of users to be used for the test
+     */
     @ParameterizedTest
     @DisplayName("Test getFollowers")
     @MethodSource("com.example.sprint1.util.Utils#userProvider")
     public void testGetFollowers(List<User> users) {
         // arrange
-        when(userRepository.findAll()).thenReturn(users);
+        Mockito.when(userRepository.findAll()).thenReturn(users);
         // act
-
+        CountFollowersUserDto expected = userService.getFollowerCount(3);
         // assert
+        Assertions.assertEquals(2, expected.getCount());
+        Assertions.assertEquals("user3", expected.getUserName());
+        Assertions.assertEquals(3, expected.getUserId());
     }
 
-    // Test unfollowUser for existing user and existing user to unfollow
+    /**
+     * Test getFollowers method with bad path
+     * This test method checks the functionality of the getFollowerCount method in the UserService class.
+     * The method is expected to throw a NotFoundException when the user is not found.
+     */
+    @Test
+    @DisplayName("Test getFollowers bad path")
+    public void testGetFollowersBadPath() {
+        // arrange
+        Mockito.when(userRepository.findAll()).thenReturn(new ArrayList<>());
+        // act
+        Assertions.assertThrows(NotFoundException.class, () -> userService.getFollowerCount(3));
+    }
+
+    /*
+     * Unit tests T-0002
+     * Test unfollowUser for existing user and existing user to unfollow
+     */
     @ParameterizedTest
     @DisplayName("Test unfollowUser for existing user and existing user to unfollow")
     @MethodSource("com.example.sprint1.util.Utils#userProvider")
@@ -121,8 +148,11 @@ public class UserServiceTest {
         userService.setUnfollow(userId, userIdToUnfollow);
         verify(userRepository, times(1)).updateUserFollowerDelete(user, userToUnfollow);
     }
-
-    // Test unfollowUser for existing user and non-existing user to unfollow
+    /*
+     * Unit tests T-0002
+     * Test unfollowUser for existing user and non-existing user to unfollow
+     * Not found exception
+     */
     @ParameterizedTest
     @DisplayName("Test unfollowUser for existing user and non-existing user to unfollow")
     @MethodSource("com.example.sprint1.util.Utils#userProvider")
@@ -144,7 +174,11 @@ public class UserServiceTest {
         verify(userRepository, times(0)).updateUserFollowerDelete(user, userToUnfollow);
     }
 
-    // Test unfollowUser for non-existing user and existing user to unfollow
+    /*
+     * Unit tests T-0002
+     * Test unfollowUser for non-existing user and existing user to unfollow
+     * Not found exception
+     */
     @ParameterizedTest
     @DisplayName("Test unfollowUser for non-existing user and existing user to unfollow")
     @MethodSource("com.example.sprint1.util.Utils#userProvider")
@@ -165,7 +199,11 @@ public class UserServiceTest {
         verify(userRepository, times(0)).updateUserFollowerDelete(user, userToUnfollow);
     }
 
-    // Test unfollowUser for existing user and existing user to unfollow but not followed
+    /*
+     * Unit tests T-0002
+     * Test unfollowUser for existing user and existing user to unfollow but not followed
+     * Bad request exception
+     */
     @ParameterizedTest
     @DisplayName("Test unfollowUser for existing user and existing user to unfollow but not followed")
     @MethodSource("com.example.sprint1.util.Utils#userProvider")
