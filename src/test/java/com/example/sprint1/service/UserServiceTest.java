@@ -1,6 +1,7 @@
 package com.example.sprint1.service;
 
 
+import com.example.sprint1.dto.CountFollowersUserDto;
 import com.example.sprint1.exception.BadRequestException;
 import com.example.sprint1.exception.NotFoundException;
 import com.example.sprint1.model.User;
@@ -43,16 +44,39 @@ public class UserServiceTest {
     UserServiceImpl userService;
 
 
-
+    /**
+     * Test getFollowers method
+     * This test method checks the functionality of the getFollowerCount method in the UserService class.
+     * The method is expected to return the count of followers for a specific user, along with the user's name and ID.
+     *
+     * @param users - The list of users to be used for the test
+     */
     @ParameterizedTest
     @DisplayName("Test getFollowers")
     @MethodSource("com.example.sprint1.util.Utils#userProvider")
     public void testGetFollowers(List<User> users) {
         // arrange
-        when(userRepository.findAll()).thenReturn(users);
+        Mockito.when(userRepository.findAll()).thenReturn(users);
         // act
-
+        CountFollowersUserDto expected = userService.getFollowerCount(3);
         // assert
+        Assertions.assertEquals(2, expected.getCount());
+        Assertions.assertEquals("user3", expected.getUserName());
+        Assertions.assertEquals(3, expected.getUserId());
+    }
+
+    /**
+     * Test getFollowers method with bad path
+     * This test method checks the functionality of the getFollowerCount method in the UserService class.
+     * The method is expected to throw a NotFoundException when the user is not found.
+     */
+    @Test
+    @DisplayName("Test getFollowers bad path")
+    public void testGetFollowersBadPath() {
+        // arrange
+        Mockito.when(userRepository.findAll()).thenReturn(new ArrayList<>());
+        // act
+        Assertions.assertThrows(NotFoundException.class, () -> userService.getFollowerCount(3));
     }
 
     /*
