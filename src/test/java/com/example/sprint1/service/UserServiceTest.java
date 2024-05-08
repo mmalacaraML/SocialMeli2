@@ -251,6 +251,17 @@ public class UserServiceTest {
         assertEquals("You cannot unfollow yourself.", exception.getMessage());
         verify(userRepository, times(0)).updateUserFollowerDelete(user, userToUnfollow);
     }
+    /**
+     * Parameterized test for ascending sort of followers.
+     * This test verifies if the ascending sorting of followers is performed correctly.
+     * A method source is used to provide different sets of input data.
+     *
+     * The @ParameterizedTest annotation indicates that this is a parameterized test.
+     * The @DisplayName annotation provides a descriptive name for the test.
+     * The @MethodSource annotation specifies the method that provides the test data for the parameterized test.
+     *
+     * @param testFollowDtos An object containing the input and expected output data for the test.
+     */
 
     @ParameterizedTest
     @DisplayName("Test ascending sort of followers")
@@ -274,9 +285,20 @@ public class UserServiceTest {
 
     }
 
+    /**
+     * Parameterized test for descending sort of followers.
+     * This test verifies if the descending sorting of followers is performed correctly.
+     * A method source is used to provide different sets of input data.
+     *
+     * The @ParameterizedTest annotation indicates that this is a parameterized test.
+     * The @DisplayName annotation provides a descriptive name for the test.
+     * The @MethodSource annotation specifies the method that provides the test data for the parameterized test.
+     *
+     * @param testFollowDtos An object containing the input and expected output data for the test.
+     */
 
     @ParameterizedTest
-    @DisplayName("Test ascending sort of followers")
+    @DisplayName("Test descending sort of followers")
     @MethodSource("com.example.sprint1.util.Utils#descendingFollowerUserProvider")
     public void descendingFollowerSort(TestFollowDto testFollowDtos){
         //Arrange
@@ -296,6 +318,18 @@ public class UserServiceTest {
         Assertions.assertEquals(actualresponseFollowListDto, outputFollowListDto, "Non matching sorting");
 
     }
+
+    /**
+     * Parameterized test for descending sort of followed users.
+     * This test verifies if the descending sorting of followed users is performed correctly.
+     * A method source is used to provide different sets of input data.
+     *
+     * The @ParameterizedTest annotation indicates that this is a parameterized test.
+     * The @DisplayName annotation provides a descriptive name for the test.
+     * The @MethodSource annotation specifies the method that provides the test data for the parameterized test.
+     *
+     * @param testFollowDtos An object containing the input and expected output data for the test.
+     */
 
     @ParameterizedTest
     @DisplayName("Test descending sort of followed")
@@ -318,6 +352,18 @@ public class UserServiceTest {
         Assertions.assertEquals(actualresponseFollowListDto, outputFollowListDto, "Non matching sorting");
 
     }
+
+    /**
+     * Parameterized test for ascending sort of followed users.
+     * This test verifies if the ascending sorting of followed users is performed correctly.
+     * A method source is used to provide different sets of input data.
+     *
+     * The @ParameterizedTest annotation indicates that this is a parameterized test.
+     * The @DisplayName annotation provides a descriptive name for the test.
+     * The @MethodSource annotation specifies the method that provides the test data for the parameterized test.
+     *
+     * @param testFollowDtos An object containing the input and expected output data for the test.
+     */
 
     @ParameterizedTest
     @DisplayName("Test ascending sort of followed")
