@@ -55,7 +55,10 @@ public class UserServiceTest {
         // assert
     }
 
-    // Test unfollowUser for existing user and existing user to unfollow
+    /*
+     * Unit tests T-0002
+     * Test unfollowUser for existing user and existing user to unfollow
+     */
     @ParameterizedTest
     @DisplayName("Test unfollowUser for existing user and existing user to unfollow")
     @MethodSource("com.example.sprint1.util.Utils#userProvider")
@@ -78,8 +81,11 @@ public class UserServiceTest {
         userService.setUnfollow(userId, userIdToUnfollow);
         verify(userRepository, times(1)).updateUserFollowerDelete(user, userToUnfollow);
     }
-
-    // Test unfollowUser for existing user and non-existing user to unfollow
+    /*
+     * Unit tests T-0002
+     * Test unfollowUser for existing user and non-existing user to unfollow
+     * Not found exception
+     */
     @ParameterizedTest
     @DisplayName("Test unfollowUser for existing user and non-existing user to unfollow")
     @MethodSource("com.example.sprint1.util.Utils#userProvider")
@@ -101,7 +107,11 @@ public class UserServiceTest {
         verify(userRepository, times(0)).updateUserFollowerDelete(user, userToUnfollow);
     }
 
-    // Test unfollowUser for non-existing user and existing user to unfollow
+    /*
+     * Unit tests T-0002
+     * Test unfollowUser for non-existing user and existing user to unfollow
+     * Not found exception
+     */
     @ParameterizedTest
     @DisplayName("Test unfollowUser for non-existing user and existing user to unfollow")
     @MethodSource("com.example.sprint1.util.Utils#userProvider")
@@ -122,7 +132,11 @@ public class UserServiceTest {
         verify(userRepository, times(0)).updateUserFollowerDelete(user, userToUnfollow);
     }
 
-    // Test unfollowUser for existing user and existing user to unfollow but not followed
+    /*
+     * Unit tests T-0002
+     * Test unfollowUser for existing user and existing user to unfollow but not followed
+     * Bad request exception
+     */
     @ParameterizedTest
     @DisplayName("Test unfollowUser for existing user and existing user to unfollow but not followed")
     @MethodSource("com.example.sprint1.util.Utils#userProvider")
