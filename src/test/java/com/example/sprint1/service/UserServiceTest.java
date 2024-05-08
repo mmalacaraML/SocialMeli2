@@ -8,6 +8,7 @@ import com.example.sprint1.exception.NotFoundException;
 import com.example.sprint1.model.User;
 import com.example.sprint1.repository.UserRepositoryImpl;
 import com.example.sprint1.util.Utils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
@@ -87,7 +89,7 @@ public class UserServiceTest {
         // Exception handling for invalid sort order
         assertThrows(BadRequestException.class, () -> userService.getFollowerList(1, "other_sort"));
     }
-
+    /*
      * Test getFollowers method
      * This test method checks the functionality of the getFollowerCount method in the UserService class.
      * The method is expected to return the count of followers for a specific user, along with the user's name and ID.
