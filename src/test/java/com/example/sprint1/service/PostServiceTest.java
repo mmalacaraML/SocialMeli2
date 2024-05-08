@@ -33,24 +33,35 @@ public class PostServiceTest {
     @Mock
     IUserRepository userRepository;
 
+
     @InjectMocks
     PostServiceImpl postService;
+
+    /**
+     * T-0006
+     * This test case tests the method selectIfOrderFollowedList of the PostService class.
+     * It tests the functionality of ordering the posts by date in ascending order.
+     * The test case uses a mock UserRepository and a mock PostRepository to provide the necessary data for the test.
+     */
     @Test
     @DisplayName("Test order post by date asc")
     public void testFollowedListSortedByDateAsc() {
         // arrange
+        // create two products
         Product product1 = new Product(1, "Product 1", "Type 1", "Brand 1", "Color 1", "Notes 1");
         Product product2 = new Product(2, "Product 2", "Type 2", "Brand 2", "Color 2", "Notes 2");
-
+        // create a list of expected posts
         List<Post> expectedPosts = List.of(
-                new Post(1, 1, "19-12-2022", 1, 100.0, product1, false, 0.0),
+                new Post(1, 2, "19-12-2022", 1, 100.0, product1, false, 0.0),
                 new Post(2, 2, "20-12-2022", 2, 200.0, product2, false, 0.0)
         );
 
+        // act
+
+        // mock the UserRepository and PostRepository methods
         Mockito.when(userRepository.getUserById(1)).thenReturn(Optional.of(new User(1, "User 1", Set.of(2), Set.of(2), Set.of(1))));
         Mockito.when(postRepository.getResentPost(Mockito.anyInt())).thenReturn(expectedPosts);
-
-        // act
+        // call the method under test
         List<PostForListDto> actualPosts = postService.selectIfOrderFollowedList(1, "date_asc");
         // convert expectedPosts to PostForListDto
         ObjectMapper mapper = new ObjectMapper();
@@ -58,28 +69,37 @@ public class PostServiceTest {
                 .map(post -> mapper.convertValue(post, PostForListDto.class))
                 .collect(Collectors.toList());
         // assert
+        // check that the actual list has the same size as the expected list
         Assertions.assertEquals(expectedPosts.size(), actualPosts.size());
+        // check that the dates are in ascending order
         for (int i = 0; i < expectedPostsForListDto.size(); i++) {
             Assertions.assertEquals(expectedPostsForListDto.get(i).getDate(), actualPosts.get(i).getDate());
         }
     }
-    
+    /**
+     * T-0006
+     * This test case tests the method selectIfOrderFollowedList of the PostService class.
+     * It tests the functionality of ordering the posts by date in descending order.
+     * The test case uses a mock UserRepository and a mock PostRepository to provide the necessary data for the test.
+     */
     @Test
     @DisplayName("Test order post by date desc")
     public void testFollowedListSortedByDateDesc() {
         // arrange
+        // create two products
         Product product1 = new Product(1, "Product 1", "Type 1", "Brand 1", "Color 1", "Notes 1");
         Product product2 = new Product(2, "Product 2", "Type 2", "Brand 2", "Color 2", "Notes 2");
-
+        // create a list of expected posts
         List<Post> expectedPosts = List.of(
-                new Post(1, 1, "20-12-2022", 1, 100.0, product1, false, 0.0),
+                new Post(1, 2, "20-12-2022", 1, 100.0, product1, false, 0.0),
                 new Post(2, 2, "19-12-2022", 2, 200.0, product2, false, 0.0)
         );
 
+        // act
+        // mock the UserRepository and PostRepository methods
         Mockito.when(userRepository.getUserById(1)).thenReturn(Optional.of(new User(1, "User 1", Set.of(2), Set.of(2), Set.of(1))));
         Mockito.when(postRepository.getResentPost(Mockito.anyInt())).thenReturn(expectedPosts);
-
-        // act
+        // call the method under test
         List<PostForListDto> actualPosts = postService.selectIfOrderFollowedList(1, "date_desc");
         // convert expectedPosts to PostForListDto
         ObjectMapper mapper = new ObjectMapper();
@@ -87,7 +107,9 @@ public class PostServiceTest {
                 .map(post -> mapper.convertValue(post, PostForListDto.class))
                 .collect(Collectors.toList());
         // assert
+        // check that the actual list has the same size as the expected list
         Assertions.assertEquals(expectedPosts.size(), actualPosts.size());
+        // check that the dates are in descending order
         for (int i = 0; i < expectedPostsForListDto.size(); i++) {
             Assertions.assertEquals(expectedPostsForListDto.get(i).getDate(), actualPosts.get(i).getDate());
         }
