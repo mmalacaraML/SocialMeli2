@@ -83,5 +83,56 @@
     },
     "has_promo": true,
     "discount": 0.3
+  },
+  {
+    "id": 6,
+    "user_id": 3,
+    "date": "08-05-2024",
+    "category": 3,
+    "price": 15.07,
+    "product": {
+      "id": 6,
+      "product_name": "Product Q",
+      "type": "Type S",
+      "brand": "Brand Epsilon",
+      "color": "Yellow",
+      "notes": "This is product Q."
+    },
+    "has_promo": true,
+    "discount": 0.3
+  },
+  {
+        "id": 7,
+        "user_id": 3,
+        "date": "07-05-2024",
+        "category": 1,
+        "price": 1005.07,
+        "product": {
+        "id": 7,
+        "product_name": "Product W",
+        "type": "Type T",
+        "brand": "Brand Blue Label",
+        "color": "Blue",
+        "notes": "This is product W."
+        },
+        "has_promo": true,
+        "discount": 0.3
+  },
+  {
+    "id": 8,
+    "user_id": 3,
+    "date": "20-04-1994",
+    "category": 1,
+    "price": 404,
+    "product": {
+      "id": 8,
+      "product_name": "Product U",
+      "type": "Type U",
+      "brand": "Brand Red Label",
+      "color": "Red",
+      "notes": "This is product U."
+    },
+    "has_promo": true,
+    "discount": 0.3
   }
 ]
