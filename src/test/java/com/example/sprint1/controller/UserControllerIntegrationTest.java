@@ -24,7 +24,7 @@ public class UserControllerIntegrationTest {
      */
     @Test
     public void getFollowersCountTest() throws Exception {
-        Integer userId = 3;// some user id
+        Integer userId = 3;// an existing user id
 
         // Mock perform a get request to the endpoint and check the response status and content
         mockMvc.perform(MockMvcRequestBuilders.get("/users/{userId}/followers/count", userId)
@@ -40,7 +40,7 @@ public class UserControllerIntegrationTest {
      */
     @Test
     public void getFollowerListTest() throws Exception {
-        Integer userId = 7;// some user id
+        Integer userId = 7;// a non existing user id
 
         // Mock perform a get request to the endpoint and check the response status and content
         mockMvc.perform(MockMvcRequestBuilders.get("/users/{userId}/followers/count", userId)
