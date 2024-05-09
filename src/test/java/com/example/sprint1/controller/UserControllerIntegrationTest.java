@@ -17,20 +17,32 @@ public class UserControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
+    /**
+     * Test for the getFollowersCount US0002 happy path
+     * It should return a json with the user_id, user_name and followers_count
+     * @throws Exception
+     */
     @Test
     public void getFollowersCountTest() throws Exception {
         Integer userId = 3;// some user id
 
+        // Mock perform a get request to the endpoint and check the response status and content
         mockMvc.perform(MockMvcRequestBuilders.get("/users/{userId}/followers/count", userId)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.content().json("{\"user_id\": 3, \"user_name\": \"user3\", \"followers_count\": 2}"));
     }
 
+    /**
+     * Test for the getFollowersCount US0002 exception path
+     * It should return a json with the user_id, user_name and followers_count
+     * @throws Exception
+     */
     @Test
     public void getFollowerListTest() throws Exception {
         Integer userId = 7;// some user id
 
+        // Mock perform a get request to the endpoint and check the response status and content
         mockMvc.perform(MockMvcRequestBuilders.get("/users/{userId}/followers/count", userId)
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
