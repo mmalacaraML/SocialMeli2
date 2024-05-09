@@ -39,7 +39,7 @@ public class UserControllerIntegrationTest {
      * @throws Exception
      */
     @Test
-    public void getFollowerListTest() throws Exception {
+    public void getFollowersCountExceptionTest() throws Exception {
         Integer userId = 7;// a non existing user id
 
         // Mock perform a get request to the endpoint and check the response status and content
